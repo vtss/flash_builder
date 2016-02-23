@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use Data::Dumper;
 use List::Util 'sum';
+use Getopt::Long;
 
 use CygCRC;
 
@@ -14,8 +15,13 @@ use constant {
     SZ_1M     => 1024 * 1024,
     SZ_8M     => 8    * 1024 * 1024,
     SZ_16M    => 16   * 1024 * 1024,
+    SZ_32M    => 32   * 1024 * 1024,
+    SZ_64M    => 64   * 1024 * 1024,
 };
 
+# Options
+my ($verbose, $save_fis);
+my (@types);
 
 sub slurp {
     my ($file) = @_;
@@ -30,7 +36,8 @@ sub slurp {
 sub mkfisentry {
     my ($name, $fbase, $mbase, $size, $entry, $dlen, $dcrc) = @_;
     my $data;
-    $data = pack("Z16V5Z212V2", $name, $fbase, $mbase, $size, $entry, $dlen, "", $dcrc, 0);
+    # NB: desc_cksum is unused
+    $data = pack("Z16V5Z212V2", $name, $fbase, $mbase, $size, $entry, $dlen, "", 0, $dcrc);
     return $data;
 }
 
@@ -225,11 +232,14 @@ sub do_image {
 
     substr($flash, $fisaddr, length($fis)) = $fis;
 
-    mkdir("fis") unless(-d "fis");
-    open(O, ">:raw", "fis/${name}.fis") || die("$!");
-    syswrite(O, $fis);
-    close(O);
-    
+    # Save FIS directory separately (debugging)
+    if ($save_fis) {
+        mkdir("fis") unless(-d "fis");
+        open(O, ">:raw", "fis/${name}.fis") || die("$!");
+        syswrite(O, $fis);
+        close(O);
+    }
+        
     mkdir("images") unless(-d "images");
     open(B, ">:raw", "images/${name}.bin") || die("$!");
     syswrite(B, $flash);
@@ -239,7 +249,7 @@ sub do_image {
 my (@boards) = (
     {
         name       => "caracal1",
-        geometries => [ [SZ_16M, SZ_64K] ],
+        geometries => [ [SZ_16M, SZ_64K], [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal1_l10_ref.gz",
         linux      => "artifacts/linux-luton10-CEServices-nor.mfi",
@@ -260,7 +270,14 @@ my (@boards) = (
     },
     );
 
-for my $t (qw(linux ecos)) {
+GetOptions ("type=s"     => \@types,
+            "fis"        => \$save_fis,
+            "verbose"    => \$verbose)
+    or die("Error in command line arguments\n");
+
+@types = qw(linux) unless(@types);
+
+for my $t (@types) {
     for my $b (@boards) {
         #print Dumper($b);
         for my $g (@{$b->{geometries}}) {
