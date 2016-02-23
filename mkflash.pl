@@ -252,21 +252,21 @@ my (@boards) = (
         geometries => [ [SZ_16M, SZ_64K], [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal1_l10_ref.gz",
-        linux      => "artifacts/linux-luton10-CEServices-nor.mfi",
+        linux      => "artifacts/web_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi",
     },
     {
         name       => "caracal2",
         geometries => [ [SZ_16M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal2_l26_ref.gz",
-        linux      => "artifacts/linux-luton26-SMBStaX-nor.mfi",
+        linux      => "artifacts/web_switch_caracal2_l26_ref_linux_icpu_brsdk-nor.mfi",
     },
     {
         name       => "serval1",
         geometries => [ [SZ_16M, SZ_256K] ],
         redboot    => "artifacts/redboot-serval1.img",
         ecos       => "artifacts/web_switch_serval_ref.gz",
-        linux      => "artifacts/linux-serval1-CEServices-nor.mfi",
+        linux      => "artifacts/web_switch_serval_ref_linux_icpu_brsdk-nor.mfi",
     },
     );
 
