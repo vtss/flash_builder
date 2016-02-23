@@ -215,7 +215,7 @@ sub do_image {
         {
             'name'     => 'Redundant FIS',
             'flash'    => $physflash + $fsize - $bsize,
-            'size'     => 0x00040000,
+            'size'     => $bsize,
         });
     
     preprocess($name, \@entries);
