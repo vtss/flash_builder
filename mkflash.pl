@@ -71,7 +71,7 @@ sub mkflash {
             } else {
                 my ($hole) = $f->{flash} - $last->{end};
                 $flash .= chr(0xff) x $hole;
-                printf ("%s: Hole of %d bytes after %08x - before %08x\n", $file, $hole, $last->{end}, $f->{flash});
+                printf ("%s: Hole of %d bytes after %08x - before %08x\n", $file, $hole, $last->{end}, $f->{flash}) if($verbose);
             }
         }
 
@@ -244,6 +244,8 @@ sub do_image {
     open(B, ">:raw", "images/${name}.bin") || die("$!");
     syswrite(B, $flash);
     close(B);
+
+    printf "Completed ${name}\n";
 }
 
 my (@boards) = (
@@ -263,10 +265,24 @@ my (@boards) = (
     },
     {
         name       => "serval1",
-        geometries => [ [SZ_16M, SZ_256K] ],
+        geometries => [ [SZ_16M, SZ_64K], [SZ_16M, SZ_256K] ],
         redboot    => "artifacts/redboot-serval1.img",
         ecos       => "artifacts/web_switch_serval_ref.gz",
         linux      => "artifacts/web_switch_serval_ref_linux_icpu_brsdk-nor.mfi",
+    },
+    {
+        name       => "jaguar2c-cu8sfp16",
+        geometries => [ [SZ_32M, SZ_64K] ],
+        redboot    => "artifacts/redboot-jaguar2.img",
+        ecos       => "artifacts/web_switch_jr2_ref.gz",
+        linux      => "artifacts/ce_switch_jr2_ref_linux_icpu_brsdk-nor.mfi",
+    },
+    {
+        name       => "jaguar2c-cu48",
+        geometries => [ [SZ_32M, SZ_64K] ],
+        redboot    => "artifacts/redboot-jaguar2.img",
+        ecos       => "artifacts/web_switch_jr2c_cu48_ref.gz",
+        linux      => "artifacts/ce_switch_jr2_cu48_ref_linux_icpu_brsdk-nor.mfi",
     },
     );
 
