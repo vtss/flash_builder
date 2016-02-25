@@ -293,6 +293,18 @@ my (@boards) = (
         redboot    => "artifacts/redboot-ocelot.img",
         linux      => "artifacts/web_switch_ocelot_ref_linux_icpu_brsdk-nor.mfi",
     },
+    {
+        name       => "serval2",
+        geometries => [ [SZ_32M, SZ_64K] ],
+        redboot    => "artifacts/redboot-jaguar2.img",
+        linux      => "artifacts/ce_switch_serval2_ref_linux_icpu_brsdk-nor.mfi",
+    },
+    {
+        name       => "servalt",
+        geometries => [ [SZ_32M, SZ_64K] ],
+        redboot    => "artifacts/redboot-servalt.img",
+        linux      => "artifacts/ce_switch_servalt_ref_linux_icpu_brsdk-nor.mfi",
+    },
     );
 
 GetOptions ("type=s"     => \@types,
