@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 use Data::Dumper;
-use List::Util 'sum';
+use List::Util qw(sum min max);
 use Getopt::Long;
 
 use CygCRC;
@@ -133,58 +133,59 @@ sub do_image {
         },
         {
             'name'     => 'conf',
-            'size'     => SZ_256K,
+            'size'     => $bsize,
             'data'     => "#@(#)VtssConfig\nMAC=00:01:c1:00:00:00\nBOARDID=1\nBOARDTYPE=0\0",
-        },
-        {
-            'name'     => 'stackconf',
-            'size'     => SZ_1M,
         });
-
     if ($layout eq "linux") {
-        my ($imgsize) = (($fsize - 3*SZ_1M) / 2);
-        push @entries, {
-            'name'     => 'managed',
-            'datafile' => $board->{ecos},
-            'memory'   => $ecosload,
-            'entry'    => $ecosentry,
-            'size'     => 3.5 * SZ_1M,
-        };
-        my ($used) = sum(map { $_->{size} } @entries) + 3*$bsize;
-        if ($fsize > SZ_16M) {
-            my ($imgsize) = block_round_down(($fsize - $used)/2, $bsize);
+        if ($fsize > SZ_8M && defined($board->{ecos})) {
             push @entries, (
                 {
-                    'name'     => 'linux',
-                    'datafile' => $board->{linux},
-                    'memory'   => $linuxload,
-                    'entry'    => $linuxload,
-                    'size'     => $imgsize,
-                }, {
-                    'name'     => 'linux.bk',
-                    'datafile' => $board->{linux},
-                    'memory'   => $linuxload,
-                    'entry'    => $linuxload,
-                    'size'     => $imgsize,
+                    'name'     => 'stackconf',
+                    'size'     => SZ_1M,
+                },
+                {
+                    'name'     => 'managed',
+                    'datafile' => $board->{ecos},
+                    'memory'   => $ecosload,
+                    'entry'    => $ecosentry,
+                    'size'     => 3.5 * SZ_1M,
                 });
+        }
+        my ($used) = sum(map { $_->{size} } @entries) + 3*$bsize;
+        my ($imgsize) = block_round_down(($fsize - $used)/2, $bsize);
+        my ($imgfile);
+        if ($fsize > SZ_16M) {
+            $imgfile = $board->{linux};
         } else {
-            # Single image - for now
-            #printf "Single image: used %d, size %08x\n", $used, block_round_down($fsize - $used, $bsize);
-            push @entries, {
+            $imgfile = $board->{bringup};
+        }
+        push @entries, (
+            {
                 'name'     => 'linux',
-                'datafile' => $board->{linux},
+                'datafile' => $imgfile,
                 'memory'   => $linuxload,
                 'entry'    => $linuxload,
-                'size'     => block_round_down($fsize - $used, $bsize),
-            };
-        }
+                'size'     => $imgsize,
+            },
+            {
+                'name'     => 'linux.bk',
+                'datafile' => $imgfile,
+                'memory'   => $linuxload,
+                'entry'    => $linuxload,
+                'size'     => $imgsize,
+            });
     } else {
         # Ecos
         push @entries, (
             {
+                'name'     => 'stackconf',
+                'size'     => SZ_256K,
+            },
+            {
                 'name'     => 'syslog',
                 'size'     => SZ_256K,
-            }, {
+            },
+            {
                 'name'     => 'crashfile',
                 'size'     => SZ_256K,
             });
@@ -197,14 +198,15 @@ sub do_image {
                 'memory'   => $ecosload,
                 'entry'    => $ecosentry,
                 'size'     => $imgsize,
-            }, {
+            },
+            {
                 'name'     => 'managed.bk',
                 'datafile' => $board->{ecos},
                 'memory'   => $ecosload,
                 'entry'    => $ecosentry,
                 'size'     => $imgsize,
             });
-    };
+        };
 
     # These are always the last entries
     my ($fisaddr) = $fsize - 3*$bsize;
@@ -251,14 +253,15 @@ sub do_image {
 my (@boards) = (
     {
         name       => "caracal1",
-        geometries => [ [SZ_16M, SZ_64K], [SZ_32M, SZ_64K] ],
+        geometries => [ [SZ_8M, SZ_64K], [SZ_16M, SZ_256K], [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal1_l10_ref.gz",
         linux      => "artifacts/web_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi",
+        bringup    => "artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.img",
     },
     {
         name       => "caracal2",
-        geometries => [ [SZ_16M, SZ_64K] ],
+        geometries => [ [SZ_16M, SZ_256K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal2_l26_ref.gz",
         linux      => "artifacts/web_switch_caracal2_l26_ref_linux_icpu_brsdk-nor.mfi",
@@ -283,6 +286,12 @@ my (@boards) = (
         redboot    => "artifacts/redboot-jaguar2.img",
         ecos       => "artifacts/web_switch_jr2c_cu48_ref.gz",
         linux      => "artifacts/ce_switch_jr2_cu48_ref_linux_icpu_brsdk-nor.mfi",
+    },
+    {
+        name       => "ocelot-cu4sfp8",
+        geometries => [ [SZ_32M, SZ_64K] ],
+        redboot    => "artifacts/redboot-ocelot.img",
+        linux      => "artifacts/web_switch_ocelot_ref_linux_icpu_brsdk-nor.mfi",
     },
     );
 
