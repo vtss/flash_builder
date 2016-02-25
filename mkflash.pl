@@ -257,7 +257,7 @@ my (@boards) = (
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal1_l10_ref.gz",
         linux      => "artifacts/web_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi",
-        bringup    => "artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.img",
+        bringup    => "artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi",
     },
     {
         name       => "caracal2",
