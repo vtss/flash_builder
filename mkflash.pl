@@ -134,7 +134,6 @@ sub do_image {
         {
             'name'     => 'conf',
             'size'     => $bsize,
-            'data'     => "#@(#)VtssConfig\nMAC=00:01:c1:00:00:00\nBOARDID=1\nBOARDTYPE=0\0",
         });
     if ($layout eq "linux") {
         if ($fsize > SZ_8M && defined($board->{ecos})) {
