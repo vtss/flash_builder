@@ -4,8 +4,7 @@ use strict;
 use Data::Dumper;
 use List::Util qw(sum min max);
 use Getopt::Long;
-
-use CygCRC;
+use YAML::Tiny;
 
 use constant {
     SZ_1K     => 1    * 1024,
@@ -20,70 +19,8 @@ use constant {
 };
 
 # Options
-my ($verbose, $save_fis);
+my ($verbose);
 my (@types);
-
-sub slurp {
-    my ($file) = @_;
-    open(F, '<:raw', $file) || die("$file: $!");
-    my($fsize) = -s $file;
-    my($fdata);
-    die "$file: $!" unless(sysread(F, $fdata, $fsize) == $fsize);
-    close(F);
-    return $fdata;
-}
-
-sub mkfisentry {
-    my ($name, $fbase, $mbase, $size, $entry, $dlen, $dcrc) = @_;
-    my $data;
-    # NB: desc_cksum is unused
-    $data = pack("Z16V5Z212V2", $name, $fbase, $mbase, $size, $entry, $dlen, "", 0, $dcrc);
-    return $data;
-}
-
-sub mkfis {
-    my ($file, $entries) = @_;
-    my ($fis) = pack("Z10CCV6Z212V2", ".FisValid", 0xa5, 0xa5, 1, (0) x 5, "", 0, 0);
-
-    for my $f (@{$entries}) {
-        # Update FIS
-        my ($dcrc) = ($f->{dlen} && !($f->{name} =~ /linux/)) ? CygCRC::crc32($f->{data}) : 0;
-        $fis .= mkfisentry($f->{name}, $f->{flash}, $f->{memory} || 0, $f->{size}, $f->{entry} || 0, $f->{dlen}, $dcrc);
-    }
-
-    $fis;
-}
-
-sub mkflash {
-    my ($file, $entries) = @_;
-    my($last);
-    my($flash) = "";
-
-    for my $f (@{$entries}) {
-        # Pad data - if needed
-        if ($f->{size} != $f->{dlen}) {
-            $f->{data} .= chr(0xff) x ($f->{size} - $f->{dlen});
-        }
-        # 
-        if ($last && $last->{end} != $f->{flash}) {
-            if ($last->{end} > $f->{flash}) {
-                die sprintf("%s: '%s': End of former (0x%08x) exceeds next block start: 0x%08x", $file, $last->{name}, $last->{end}, $f->{flash});
-            } else {
-                my ($hole) = $f->{flash} - $last->{end};
-                $flash .= chr(0xff) x $hole;
-                printf ("%s: Hole of %d bytes after %08x - before %08x\n", $file, $hole, $last->{end}, $f->{flash}) if($verbose);
-            }
-        }
-
-        # Flash Image
-        $flash .= $f->{data};
-
-        # remember last entry
-        $last = $f;
-    }
-
-    return $flash;
-}
 
 # Preprocess to align size/address, read data from files
 sub preprocess {
@@ -96,20 +33,6 @@ sub preprocess {
             $f->{size} = $f->{flash} - $last->{flash} unless($f->{size});
         }
         
-        # Data from file
-        if ($f->{datafile}) {
-            $f->{data} = slurp($f->{datafile});
-        }
-
-        # Data length
-        if ($f->{data}) {
-            $f->{dlen} = length($f->{data});
-            die sprintf("%s:%s: Data length (%d) exceeds defined size: %d", $file, $f->{name}, $f->{dlen}, $f->{size}) if ($f->{dlen} > $f->{size});
-        } else {
-            $f->{dlen} = 0;
-            $f->{data} = "";
-        }
-
         $f->{end} = $f->{flash} + $f->{size};
         $last = $f;
     }
@@ -223,23 +146,42 @@ sub do_image {
     
     preprocess($name, \@entries);
 
-    my ($fis) = mkfis($name, \@entries);
-    my ($flash) = mkflash($name, \@entries); 
-
-    substr($flash, $fisaddr, length($fis)) = $fis;
-
-    # Save FIS directory separately (debugging)
-    if ($save_fis) {
-        mkdir("fis") unless(-d "fis");
-        open(O, ">:raw", "fis/${name}.fis") || die("$!");
-        syswrite(O, $fis);
-        close(O);
+    mkdir("templates") unless(-d "templates");
+    open(O, '>', "templates/${name}.txt") || die("$!");
+    printf(O "# Flash template: ${name}\n");
+    printf(O "# The first section describe the flash geometry: capacity, blocksize\n");
+    printf(O "---\n");
+    printf(O "capacity: %dM\n", $fsize/(1024*1024));
+    printf(O "blocksize: %dK\n", $bsize/1024);
+    for my $i (0..scalar(@entries)-1) {
+        if ($i == 0) {
+            printf(O "#\n");
+            printf(O "# Subsequent sections describe individual flash sections:\n");
+            printf(O "#  - name: The FIS name. 1 to 15 characters\n");
+            printf(O "#  - size: Flash section size. Units 'M' or 'K'\n");
+            printf(O "#  - flash: Hex address of section\n");
+            printf(O "#  - entry: Hex address of execution entrypoint (optional)\n");
+            printf(O "#  - memory: Hex address of memory load address (optional)\n");
+            printf(O "#  - datafile: File name to load data from (optional)\n");
+            printf(O "#\n");
+        }
+        printf(O "---\n");
+        printf(O "name: '%s'\n", $entries[$i]->{name});
+        if ($entries[$i]->{size} > 1024*1024 && ($entries[$i]->{size} % (1024*1024)) == 0 ) {
+            printf(O "size: %dM\n", $entries[$i]->{size}/(1024*1024));
+        } elsif( $entries[$i]->{size} > 1024 &&  ($entries[$i]->{size} % 1024) == 0 ) {
+            printf(O "size: %dK\n", $entries[$i]->{size}/1024);
+        } else {
+            printf(O "size: %d\n", $entries[$i]->{size});
+        }
+        for my $t (qw(flash memory entry)) {
+            printf(O "%s: 0x%08x\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
+        }
+        for my $t (qw(datafile)) {
+            printf(O "%s: %s\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
+        }
     }
-        
-    mkdir("images") unless(-d "images");
-    open(B, ">:raw", "images/${name}.bin") || die("$!");
-    syswrite(B, $flash);
-    close(B);
+    close(O);
 
     printf "Completed ${name}\n";
 }
@@ -301,7 +243,6 @@ my (@boards) = (
     );
 
 GetOptions ("type=s"     => \@types,
-            "fis"        => \$save_fis,
             "verbose"    => \$verbose)
     or die("Error in command line arguments\n");
 
