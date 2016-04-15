@@ -27,14 +27,14 @@ size: 3840K
 flash: 0x40050000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi
+datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'linux.bk'
 size: 3840K
 flash: 0x40410000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk-nor.mfi
+datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'FIS directory'
 size: 64K
