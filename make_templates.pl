@@ -226,7 +226,7 @@ my (@boards) = (
         name       => "ocelot-cu4sfp8",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-ocelot.img",
-        linux      => "artifacts/web_switch_ocelot_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_switch_ocelot_ref_linux_icpu_brsdk.mfi",
     },
     {
         name       => "serval2",
