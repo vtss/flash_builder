@@ -58,37 +58,47 @@ sub do_image {
             'name'     => 'conf',
             'size'     => $bsize,
         });
-    if ($layout eq "hybrid" || $layout eq "linux") {
-        return if($layout eq "hybrid" && !((defined $board->{ecos}) && (defined $board->{linux})));
-        return if($layout eq "linux" && !(defined $board->{linux}));
-        if ($layout eq "hybrid" && $fsize > SZ_8M && defined($board->{ecos})) {
-            push @entries, (
-                {
-                    'name'     => 'stackconf',
-                    'size'     => SZ_1M,
-                },
-                {
-                    'name'     => 'managed',
-                    'datafile' => $board->{ecos},
-                    'memory'   => $ecosload,
-                    'entry'    => $ecosentry,
-                    'size'     => 3.5 * SZ_1M,
-                });
-        }
+    if ($layout eq "hybrid") {
+        return if(!(defined $board->{ecos}) || !(defined $board->{linux}));
+        return if($fsize <= SZ_8M);
+        push @entries, (
+            {
+                'name'     => 'stackconf',
+                'size'     => SZ_1M,
+            });
         my ($used) = sum(map { $_->{size} } @entries) + 3*$bsize;
         my ($imgsize) = block_round_down(($fsize - $used)/2, $bsize);
-        my ($imgfile) = $board->{linux};
+        push @entries, (
+            {
+                'name'     => 'managed',
+                'datafile' => $board->{ecos},
+                'memory'   => $ecosload,
+                'entry'    => $ecosentry,
+                'size'     => $imgsize,
+            },
+            {
+                'name'     => 'linux',
+                'datafile' => $board->{linux},
+                'memory'   => $linuxload,
+                'entry'    => $linuxload,
+                'size'     => $imgsize,
+            });
+    } elsif ($layout eq "linux") {
+        return if(!(defined $board->{linux}));
+        my ($used) = sum(map { $_->{size} } @entries) + 3*$bsize;
+        my ($imgsize) = block_round_down(($fsize - $used)/2, $bsize);
+        my ($imgfile) = 
         push @entries, (
             {
                 'name'     => 'linux',
-                'datafile' => $imgfile,
+                'datafile' => $board->{linux},
                 'memory'   => $linuxload,
                 'entry'    => $linuxload,
                 'size'     => $imgsize,
             },
             {
                 'name'     => 'linux.bk',
-                'datafile' => $imgfile,
+                'datafile' => $board->{linux},
                 'memory'   => $linuxload,
                 'entry'    => $linuxload,
                 'size'     => $imgsize,

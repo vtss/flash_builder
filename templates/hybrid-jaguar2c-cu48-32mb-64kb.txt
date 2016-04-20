@@ -27,22 +27,15 @@ size: 1024K
 flash: 0x40050000
 ---
 name: 'managed'
-size: 3584K
+size: 15616K
 flash: 0x40150000
 memory: 0x80040000
 entry: 0x800400bc
 datafile: artifacts/web_switch_jr2c_cu48_ref.gz
 ---
 name: 'linux'
-size: 13824K
-flash: 0x404d0000
-memory: 0x80100000
-entry: 0x80100000
-datafile: artifacts/bringup_switch_jr2_cu48_ref_linux_icpu_brsdk.mfi
----
-name: 'linux.bk'
-size: 13824K
-flash: 0x41250000
+size: 15616K
+flash: 0x41090000
 memory: 0x80100000
 entry: 0x80100000
 datafile: artifacts/bringup_switch_jr2_cu48_ref_linux_icpu_brsdk.mfi

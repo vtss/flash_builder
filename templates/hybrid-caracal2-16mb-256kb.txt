@@ -27,22 +27,15 @@ size: 1024K
 flash: 0x40080000
 ---
 name: 'managed'
-size: 3584K
+size: 6912K
 flash: 0x40180000
 memory: 0x80040000
 entry: 0x800400bc
 datafile: artifacts/web_switch_caracal2_l26_ref.gz
 ---
 name: 'linux'
-size: 5M
-flash: 0x40500000
-memory: 0x80100000
-entry: 0x80100000
-datafile: artifacts/bringup_switch_caracal2_l26_ref_linux_icpu_brsdk.mfi
----
-name: 'linux.bk'
-size: 5M
-flash: 0x40a00000
+size: 6912K
+flash: 0x40840000
 memory: 0x80100000
 entry: 0x80100000
 datafile: artifacts/bringup_switch_caracal2_l26_ref_linux_icpu_brsdk.mfi
