@@ -1,0 +1,50 @@
+# Flash template: linux-caracal2-16mb-256kb
+# The first section describe the flash geometry: capacity, blocksize
+---
+capacity: 16M
+blocksize: 256K
+#
+# Subsequent sections describe individual flash sections:
+#  - name: The FIS name. 1 to 15 characters
+#  - size: Flash section size. Units 'M' or 'K'
+#  - flash: Hex address of section
+#  - entry: Hex address of execution entrypoint (optional)
+#  - memory: Hex address of memory load address (optional)
+#  - datafile: File name to load data from (optional)
+#
+---
+name: 'RedBoot'
+size: 256K
+flash: 0x40000000
+datafile: artifacts/redboot-luton26.img
+---
+name: 'conf'
+size: 256K
+flash: 0x40040000
+---
+name: 'linux'
+size: 7424K
+flash: 0x40080000
+memory: 0x80100000
+entry: 0x80100000
+datafile: artifacts/bringup_switch_caracal2_l26_ref_linux_icpu_brsdk.mfi
+---
+name: 'linux.bk'
+size: 7424K
+flash: 0x407c0000
+memory: 0x80100000
+entry: 0x80100000
+datafile: artifacts/bringup_switch_caracal2_l26_ref_linux_icpu_brsdk.mfi
+---
+name: 'FIS directory'
+size: 256K
+flash: 0x40f40000
+---
+name: 'RedBoot config'
+size: 4K
+flash: 0x40f80000
+datafile: files/fconfig-linux.bin
+---
+name: 'Redundant FIS'
+size: 256K
+flash: 0x40fc0000

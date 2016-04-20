@@ -58,8 +58,8 @@ sub do_image {
             'name'     => 'conf',
             'size'     => $bsize,
         });
-    if ($layout eq "hybrid") {
-        if ($fsize > SZ_8M && defined($board->{ecos})) {
+    if ($layout eq "hybrid" || $layout eq "linux") {
+        if ($layout eq "hybrid" && $fsize > SZ_8M && defined($board->{ecos})) {
             push @entries, (
                 {
                     'name'     => 'stackconf',
@@ -246,7 +246,7 @@ GetOptions ("type=s"     => \@types,
             "verbose"    => \$verbose)
     or die("Error in command line arguments\n");
 
-@types = qw(hybrid) unless(@types);
+@types = qw(hybrid linux) unless(@types);
 
 for my $t (@types) {
     for my $b (@boards) {
