@@ -59,6 +59,8 @@ sub do_image {
             'size'     => $bsize,
         });
     if ($layout eq "hybrid" || $layout eq "linux") {
+        return if($layout eq "hybrid" && !((defined $board->{ecos}) && (defined $board->{linux})));
+        return if($layout eq "linux" && !(defined $board->{linux}));
         if ($layout eq "hybrid" && $fsize > SZ_8M && defined($board->{ecos})) {
             push @entries, (
                 {
@@ -93,6 +95,7 @@ sub do_image {
             });
     } else {
         # Ecos
+        return unless(defined $board->{ecos});
         push @entries, (
             {
                 'name'     => 'stackconf',
@@ -188,6 +191,18 @@ sub do_image {
 
 my (@boards) = (
     {
+        name       => "jaguar1-24",
+        geometries => [ [SZ_16M, SZ_256K] ],
+        redboot    => "artifacts/redboot-jaguar1.img",
+        ecos       => "artifacts/web_switch_jr1_ref.gz",
+    },
+    {
+        name       => "jaguar1-cu48",
+        geometries => [ [SZ_16M, SZ_256K] ],
+        redboot    => "artifacts/redboot-jaguar1.img",
+        ecos       => "artifacts/web_switch_jr1_cu48_ref.gz",
+    },
+    {
         name       => "caracal1",
         geometries => [ [SZ_8M, SZ_64K], [SZ_16M, SZ_256K], [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
@@ -246,7 +261,7 @@ GetOptions ("type=s"     => \@types,
             "verbose"    => \$verbose)
     or die("Error in command line arguments\n");
 
-@types = qw(hybrid linux) unless(@types);
+@types = qw(ecos hybrid linux) unless(@types);
 
 for my $t (@types) {
     for my $b (@boards) {

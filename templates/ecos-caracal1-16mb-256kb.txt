@@ -1,0 +1,62 @@
+# Flash template: ecos-caracal1-16mb-256kb
+# The first section describe the flash geometry: capacity, blocksize
+---
+capacity: 16M
+blocksize: 256K
+#
+# Subsequent sections describe individual flash sections:
+#  - name: The FIS name. 1 to 15 characters
+#  - size: Flash section size. Units 'M' or 'K'
+#  - flash: Hex address of section
+#  - entry: Hex address of execution entrypoint (optional)
+#  - memory: Hex address of memory load address (optional)
+#  - datafile: File name to load data from (optional)
+#
+---
+name: 'RedBoot'
+size: 256K
+flash: 0x40000000
+datafile: artifacts/redboot-luton26.img
+---
+name: 'conf'
+size: 256K
+flash: 0x40040000
+---
+name: 'stackconf'
+size: 256K
+flash: 0x40080000
+---
+name: 'syslog'
+size: 256K
+flash: 0x400c0000
+---
+name: 'crashfile'
+size: 256K
+flash: 0x40100000
+---
+name: 'managed'
+size: 7M
+flash: 0x40140000
+memory: 0x80040000
+entry: 0x800400bc
+datafile: artifacts/web_switch_caracal1_l10_ref.gz
+---
+name: 'managed.bk'
+size: 7M
+flash: 0x40840000
+memory: 0x80040000
+entry: 0x800400bc
+datafile: artifacts/web_switch_caracal1_l10_ref.gz
+---
+name: 'FIS directory'
+size: 256K
+flash: 0x40f40000
+---
+name: 'RedBoot config'
+size: 4K
+flash: 0x40f80000
+datafile: files/fconfig-ecos.bin
+---
+name: 'Redundant FIS'
+size: 256K
+flash: 0x40fc0000
