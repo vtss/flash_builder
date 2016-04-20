@@ -1,7 +1,7 @@
-# Flash template: linux-serval2-32mb-64kb
+# Flash template: hybrid-caracal1-8mb-64kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
-capacity: 32M
+capacity: 8M
 blocksize: 64K
 #
 # Subsequent sections describe individual flash sections:
@@ -16,35 +16,35 @@ blocksize: 64K
 name: 'RedBoot'
 size: 256K
 flash: 0x40000000
-datafile: artifacts/redboot-jaguar2.img
+datafile: artifacts/redboot-luton26.img
 ---
 name: 'conf'
 size: 64K
 flash: 0x40040000
 ---
 name: 'linux'
-size: 16128K
+size: 3840K
 flash: 0x40050000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_serval2_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'linux.bk'
-size: 16128K
-flash: 0x41010000
+size: 3840K
+flash: 0x40410000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_serval2_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'FIS directory'
 size: 64K
-flash: 0x41fd0000
+flash: 0x407d0000
 ---
 name: 'RedBoot config'
 size: 4K
-flash: 0x41fe0000
-datafile: files/fconfig-linux.bin
+flash: 0x407e0000
+datafile: files/fconfig-hybrid.bin
 ---
 name: 'Redundant FIS'
 size: 64K
-flash: 0x41ff0000
+flash: 0x407f0000

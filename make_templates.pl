@@ -58,7 +58,7 @@ sub do_image {
             'name'     => 'conf',
             'size'     => $bsize,
         });
-    if ($layout eq "linux") {
+    if ($layout eq "hybrid") {
         if ($fsize > SZ_8M && defined($board->{ecos})) {
             push @entries, (
                 {
@@ -246,7 +246,7 @@ GetOptions ("type=s"     => \@types,
             "verbose"    => \$verbose)
     or die("Error in command line arguments\n");
 
-@types = qw(linux) unless(@types);
+@types = qw(hybrid) unless(@types);
 
 for my $t (@types) {
     for my $b (@boards) {

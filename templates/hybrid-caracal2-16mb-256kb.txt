@@ -1,4 +1,4 @@
-# Flash template: linux-caracal2-16mb-256kb
+# Flash template: hybrid-caracal2-16mb-256kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
 capacity: 16M
@@ -54,7 +54,7 @@ flash: 0x40f40000
 name: 'RedBoot config'
 size: 4K
 flash: 0x40f80000
-datafile: files/fconfig-linux.bin
+datafile: files/fconfig-hybrid.bin
 ---
 name: 'Redundant FIS'
 size: 256K

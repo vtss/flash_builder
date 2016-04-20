@@ -1,8 +1,8 @@
-# Flash template: linux-caracal1-8mb-64kb
+# Flash template: hybrid-caracal1-16mb-256kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
-capacity: 8M
-blocksize: 64K
+capacity: 16M
+blocksize: 256K
 #
 # Subsequent sections describe individual flash sections:
 #  - name: The FIS name. 1 to 15 characters
@@ -19,32 +19,43 @@ flash: 0x40000000
 datafile: artifacts/redboot-luton26.img
 ---
 name: 'conf'
-size: 64K
+size: 256K
 flash: 0x40040000
 ---
+name: 'stackconf'
+size: 1024K
+flash: 0x40080000
+---
+name: 'managed'
+size: 3584K
+flash: 0x40180000
+memory: 0x80040000
+entry: 0x800400bc
+datafile: artifacts/web_switch_caracal1_l10_ref.gz
+---
 name: 'linux'
-size: 3840K
-flash: 0x40050000
+size: 5M
+flash: 0x40500000
 memory: 0x80100000
 entry: 0x80100000
 datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'linux.bk'
-size: 3840K
-flash: 0x40410000
+size: 5M
+flash: 0x40a00000
 memory: 0x80100000
 entry: 0x80100000
 datafile: artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi
 ---
 name: 'FIS directory'
-size: 64K
-flash: 0x407d0000
+size: 256K
+flash: 0x40f40000
 ---
 name: 'RedBoot config'
 size: 4K
-flash: 0x407e0000
-datafile: files/fconfig-linux.bin
+flash: 0x40f80000
+datafile: files/fconfig-hybrid.bin
 ---
 name: 'Redundant FIS'
-size: 64K
-flash: 0x407f0000
+size: 256K
+flash: 0x40fc0000
