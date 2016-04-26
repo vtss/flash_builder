@@ -217,53 +217,53 @@ my (@boards) = (
         geometries => [ [SZ_8M, SZ_64K], [SZ_16M, SZ_256K], [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal1_l10_ref.gz",
-        linux      => "artifacts/bringup_switch_caracal1_l10_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_caracal1.mfi",
     },
     {
         name       => "caracal2",
         geometries => [ [SZ_16M, SZ_256K] ],
         redboot    => "artifacts/redboot-luton26.img",
         ecos       => "artifacts/web_switch_caracal2_l26_ref.gz",
-        linux      => "artifacts/bringup_switch_caracal2_l26_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_caracal2.mfi",
     },
     {
         name       => "serval1",
         geometries => [ [SZ_16M, SZ_64K], [SZ_16M, SZ_256K] ],
         redboot    => "artifacts/redboot-serval1.img",
         ecos       => "artifacts/web_switch_serval_ref.gz",
-        linux      => "artifacts/bringup_switch_serval_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_serval.mfi",
     },
     {
-        name       => "jaguar2c-cu8sfp16",
+        name       => "jaguar2-cu8sfp16",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-jaguar2.img",
         ecos       => "artifacts/web_switch_jr2_ref.gz",
-        linux      => "artifacts/bringup_switch_jr2_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_jr2_24.mfi",
     },
     {
-        name       => "jaguar2c-cu48",
+        name       => "jaguar2-cu48",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-jaguar2.img",
         ecos       => "artifacts/web_switch_jr2c_cu48_ref.gz",
-        linux      => "artifacts/bringup_switch_jr2_cu48_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_jr2_48.mfi",
     },
     {
         name       => "ocelot-cu4sfp8",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-ocelot.img",
-        linux      => "artifacts/bringup_switch_ocelot_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_ocelot.mfi",
     },
     {
         name       => "serval2",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-jaguar2.img",
-        linux      => "artifacts/bringup_switch_serval2_ref_linux_icpu_brsdk.mfi",
+        linux      => "artifacts/bringup_serval2.mfi",
     },
     {
         name       => "servalt",
         geometries => [ [SZ_32M, SZ_64K] ],
         redboot    => "artifacts/redboot-servalt.img",
-        linux      => "artifacts/bringup_switch_servalt_ref_linux_icpu_brsdk.mfi"
+        linux      => "artifacts/bringup_serval_t.mfi"
     },
     );
 

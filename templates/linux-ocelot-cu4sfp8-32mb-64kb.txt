@@ -27,14 +27,14 @@ size: 16128K
 flash: 0x40050000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_ocelot_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_ocelot.mfi
 ---
 name: 'linux.bk'
 size: 16128K
 flash: 0x41010000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_ocelot_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_ocelot.mfi
 ---
 name: 'FIS directory'
 size: 64K

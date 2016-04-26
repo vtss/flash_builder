@@ -1,4 +1,4 @@
-# Flash template: hybrid-jaguar2c-cu48-32mb-64kb
+# Flash template: linux-jaguar2-cu48-32mb-64kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
 capacity: 32M
@@ -22,23 +22,19 @@ name: 'conf'
 size: 64K
 flash: 0x40040000
 ---
-name: 'stackconf'
-size: 1024K
-flash: 0x40050000
----
-name: 'managed'
-size: 15616K
-flash: 0x40150000
-memory: 0x80040000
-entry: 0x800400bc
-datafile: artifacts/web_switch_jr2c_cu48_ref.gz
----
 name: 'linux'
-size: 15616K
-flash: 0x41090000
+size: 16128K
+flash: 0x40050000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_jr2_cu48_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_jr2_48.mfi
+---
+name: 'linux.bk'
+size: 16128K
+flash: 0x41010000
+memory: 0x80100000
+entry: 0x80100000
+datafile: artifacts/bringup_jr2_48.mfi
 ---
 name: 'FIS directory'
 size: 64K
@@ -47,7 +43,7 @@ flash: 0x41fd0000
 name: 'RedBoot config'
 size: 4K
 flash: 0x41fe0000
-datafile: files/fconfig-hybrid.bin
+datafile: files/fconfig-linux.bin
 ---
 name: 'Redundant FIS'
 size: 64K

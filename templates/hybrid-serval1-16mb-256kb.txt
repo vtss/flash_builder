@@ -38,7 +38,7 @@ size: 6912K
 flash: 0x40840000
 memory: 0x80100000
 entry: 0x80100000
-datafile: artifacts/bringup_switch_serval_ref_linux_icpu_brsdk.mfi
+datafile: artifacts/bringup_serval.mfi
 ---
 name: 'FIS directory'
 size: 256K
