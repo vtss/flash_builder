@@ -164,8 +164,8 @@ sub do_image {
     printf(O "# Flash template: ${name}\n");
     printf(O "# The first section describe the flash geometry: capacity, blocksize\n");
     printf(O "---\n");
-    printf(O "capacity: %dM\n", $fsize/(1024*1024));
-    printf(O "blocksize: %dK\n", $bsize/1024);
+    printf(O "- capacity: %dM\n", $fsize/(1024*1024));
+    printf(O "  blocksize: %dK\n", $bsize/1024);
     for my $i (0..scalar(@entries)-1) {
         if ($i == 0) {
             printf(O "#\n");
@@ -178,20 +178,19 @@ sub do_image {
             printf(O "#  - datafile: File name to load data from (optional)\n");
             printf(O "#\n");
         }
-        printf(O "---\n");
-        printf(O "name: '%s'\n", $entries[$i]->{name});
+        printf(O "- name: '%s'\n", $entries[$i]->{name});
         if ($entries[$i]->{size} > 1024*1024 && ($entries[$i]->{size} % (1024*1024)) == 0 ) {
-            printf(O "size: %dM\n", $entries[$i]->{size}/(1024*1024));
+            printf(O "  size: %dM\n", $entries[$i]->{size}/(1024*1024));
         } elsif( $entries[$i]->{size} > 1024 &&  ($entries[$i]->{size} % 1024) == 0 ) {
-            printf(O "size: %dK\n", $entries[$i]->{size}/1024);
+            printf(O "  size: %dK\n", $entries[$i]->{size}/1024);
         } else {
-            printf(O "size: %d\n", $entries[$i]->{size});
+            printf(O "  size: %d\n", $entries[$i]->{size});
         }
         for my $t (qw(flash memory entry)) {
-            printf(O "%s: 0x%08x\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
+            printf(O "  %s: 0x%08x\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
         }
         for my $t (qw(datafile)) {
-            printf(O "%s: %s\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
+            printf(O "  %s: %s\n", $t, $entries[$i]->{$t}) if($entries[$i]->{$t});
         }
     }
     close(O);

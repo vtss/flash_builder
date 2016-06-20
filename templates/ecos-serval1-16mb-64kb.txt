@@ -1,8 +1,8 @@
 # Flash template: ecos-serval1-16mb-64kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
-capacity: 16M
-blocksize: 64K
+- capacity: 16M
+  blocksize: 64K
 #
 # Subsequent sections describe individual flash sections:
 #  - name: The FIS name. 1 to 15 characters
@@ -12,51 +12,41 @@ blocksize: 64K
 #  - memory: Hex address of memory load address (optional)
 #  - datafile: File name to load data from (optional)
 #
----
-name: 'RedBoot'
-size: 256K
-flash: 0x40000000
-datafile: artifacts/redboot-serval1.img
----
-name: 'conf'
-size: 64K
-flash: 0x40040000
----
-name: 'stackconf'
-size: 256K
-flash: 0x40050000
----
-name: 'syslog'
-size: 256K
-flash: 0x40090000
----
-name: 'crashfile'
-size: 256K
-flash: 0x400d0000
----
-name: 'managed'
-size: 7552K
-flash: 0x40110000
-memory: 0x80040000
-entry: 0x800400bc
-datafile: artifacts/web_switch_serval_ref.gz
----
-name: 'managed.bk'
-size: 7552K
-flash: 0x40870000
-memory: 0x80040000
-entry: 0x800400bc
-datafile: artifacts/web_switch_serval_ref.gz
----
-name: 'FIS directory'
-size: 64K
-flash: 0x40fd0000
----
-name: 'RedBoot config'
-size: 4K
-flash: 0x40fe0000
-datafile: files/fconfig-ecos.bin
----
-name: 'Redundant FIS'
-size: 64K
-flash: 0x40ff0000
+- name: 'RedBoot'
+  size: 256K
+  flash: 0x40000000
+  datafile: artifacts/redboot-serval1.img
+- name: 'conf'
+  size: 64K
+  flash: 0x40040000
+- name: 'stackconf'
+  size: 256K
+  flash: 0x40050000
+- name: 'syslog'
+  size: 256K
+  flash: 0x40090000
+- name: 'crashfile'
+  size: 256K
+  flash: 0x400d0000
+- name: 'managed'
+  size: 7552K
+  flash: 0x40110000
+  memory: 0x80040000
+  entry: 0x800400bc
+  datafile: artifacts/web_switch_serval_ref.gz
+- name: 'managed.bk'
+  size: 7552K
+  flash: 0x40870000
+  memory: 0x80040000
+  entry: 0x800400bc
+  datafile: artifacts/web_switch_serval_ref.gz
+- name: 'FIS directory'
+  size: 64K
+  flash: 0x40fd0000
+- name: 'RedBoot config'
+  size: 4K
+  flash: 0x40fe0000
+  datafile: files/fconfig-ecos.bin
+- name: 'Redundant FIS'
+  size: 64K
+  flash: 0x40ff0000

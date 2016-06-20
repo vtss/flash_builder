@@ -1,8 +1,8 @@
 # Flash template: linux-serval1-16mb-64kb
 # The first section describe the flash geometry: capacity, blocksize
 ---
-capacity: 16M
-blocksize: 64K
+- capacity: 16M
+  blocksize: 64K
 #
 # Subsequent sections describe individual flash sections:
 #  - name: The FIS name. 1 to 15 characters
@@ -12,39 +12,32 @@ blocksize: 64K
 #  - memory: Hex address of memory load address (optional)
 #  - datafile: File name to load data from (optional)
 #
----
-name: 'RedBoot'
-size: 256K
-flash: 0x40000000
-datafile: artifacts/redboot-serval1.img
----
-name: 'conf'
-size: 64K
-flash: 0x40040000
----
-name: 'linux'
-size: 7936K
-flash: 0x40050000
-memory: 0x80100000
-entry: 0x80100000
-datafile: artifacts/bringup_serval.mfi
----
-name: 'linux.bk'
-size: 7936K
-flash: 0x40810000
-memory: 0x80100000
-entry: 0x80100000
-datafile: artifacts/bringup_serval.mfi
----
-name: 'FIS directory'
-size: 64K
-flash: 0x40fd0000
----
-name: 'RedBoot config'
-size: 4K
-flash: 0x40fe0000
-datafile: files/fconfig-linux.bin
----
-name: 'Redundant FIS'
-size: 64K
-flash: 0x40ff0000
+- name: 'RedBoot'
+  size: 256K
+  flash: 0x40000000
+  datafile: artifacts/redboot-serval1.img
+- name: 'conf'
+  size: 64K
+  flash: 0x40040000
+- name: 'linux'
+  size: 7936K
+  flash: 0x40050000
+  memory: 0x80100000
+  entry: 0x80100000
+  datafile: artifacts/bringup_serval.mfi
+- name: 'linux.bk'
+  size: 7936K
+  flash: 0x40810000
+  memory: 0x80100000
+  entry: 0x80100000
+  datafile: artifacts/bringup_serval.mfi
+- name: 'FIS directory'
+  size: 64K
+  flash: 0x40fd0000
+- name: 'RedBoot config'
+  size: 4K
+  flash: 0x40fe0000
+  datafile: files/fconfig-linux.bin
+- name: 'Redundant FIS'
+  size: 64K
+  flash: 0x40ff0000

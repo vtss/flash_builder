@@ -196,7 +196,7 @@ sub find_fis {
 
 sub do_image {
     my ($name, $layout) = @_;
-    my (@entries) = @{$layout};
+    my (@entries) = @{$layout->[0]};
     my ($geometry) = shift @entries;
 
     die("First entry must define flash geometry") unless($geometry->{capacity});
