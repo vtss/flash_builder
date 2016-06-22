@@ -5,6 +5,9 @@ properties([
 
 node('soft03') {
 
+    echo "Checkout ${BRANCH_NAME} ${JOB_URL} ${JOB_NAME}"
+    println BRANCH_NAME
+
     stage "SCM Checkout"
     checkout([
         $class: 'GitSCM',
@@ -20,10 +23,13 @@ node('soft03') {
 
     stage "Copy artifacts"
     step([$class: 'CopyArtifact', filter: 'images/*', fingerprintArtifacts: true, flatten: true,
+          resultVariableSuffix: 'REDBOOT',
           projectName: 'webstax2-redboot', selector: [$class: 'LastCompletedBuildSelector'], target: 'inputs'])
     step([$class: 'CopyArtifact', filter: 'build/obj/*.gz', fingerprintArtifacts: true, flatten: true,
+          resultVariableSuffix: 'ECOS',
           projectName: 'webstax2-webstax-3_60_mass', selector: [$class: 'LastCompletedBuildSelector'], target: 'inputs'])
     step([$class: 'CopyArtifact', filter: 'build/obj/results/bringup_*/bringup_*.mfi', fingerprintArtifacts: true, flatten: true,
+          resultVariableSuffix: 'LINSTAX',
           projectName: 'webstax2-linstax/4-dev', selector: [$class: 'LastCompletedBuildSelector'], target: 'inputs'])
     
     stage "Build images"
