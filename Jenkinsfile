@@ -5,8 +5,6 @@ properties([
 
 node('soft03') {
 
-    echo "Checkout ${BRANCH_NAME} ${JOB_URL} ${JOB_NAME}"
-
     stage "SCM Checkout"
     checkout([
         $class: 'GitSCM',
