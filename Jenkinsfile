@@ -6,7 +6,6 @@ properties([
 node('soft03') {
 
     echo "Checkout ${BRANCH_NAME} ${JOB_URL} ${JOB_NAME}"
-    println BRANCH_NAME
 
     stage "SCM Checkout"
     checkout([
@@ -33,7 +32,7 @@ node('soft03') {
           projectName: 'webstax2-linstax/4-dev', selector: [$class: 'LastCompletedBuildSelector'], target: 'inputs'])
     
     stage "Build images"
-    sh "make"
+    sh "printenv; git branch; make"
 
     stage "Archiving results"
     archive 'images/*,status/*'
