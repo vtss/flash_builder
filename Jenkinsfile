@@ -6,7 +6,11 @@ properties([
 node('master') {
 
     stage "SCM Checkout"
-    checkout scm
+    checkout([$class: 'GitSCM',
+              branches: scm.branches,
+              doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+              extensions: scm.extensions, submoduleCfg: [],
+              userRemoteConfigs: scm.userRemoteConfigs])
 
     stage "Clean"
     sh "make clobber"
