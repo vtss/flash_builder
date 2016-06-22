@@ -3,7 +3,7 @@ properties([
     [$class: 'GithubProjectProperty', projectUrlStr: 'https://git-ent.microsemi.net/sw/flash_builder'],
 ])
 
-node('blademaster') {
+node('soft03') {
 
     stage "SCM Checkout"
     checkout scm
