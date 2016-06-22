@@ -3,14 +3,10 @@ properties([
     [$class: 'GithubProjectProperty', projectUrlStr: 'https://git-ent.microsemi.net/sw/flash_builder'],
 ])
 
-node('master') {
+node('blademaster') {
 
     stage "SCM Checkout"
-    checkout([$class: 'GitSCM',
-              branches: scm.branches,
-              doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-              extensions: scm.extensions, submoduleCfg: [],
-              userRemoteConfigs: scm.userRemoteConfigs])
+    checkout scm
 
     stage "Clean"
     sh "make clobber"
