@@ -20,9 +20,22 @@ end.order!
 
 topRes = ResultNode.new('flash-images', "OK", { } )
 
-%w(ecos linstax redboot).each do |n|
-  v = "COPYARTIFACT_BUILD_NUMBER_" + n.upcase
-  topRes.meta["#{n}-build"] = ENV[v] if ENV[v]
+jenkins = ENV["JENKINS_URL"]
+
+jobnames = {
+  "redboot" => "webstax2-redboot",
+  "ecos" => "webstax2-webstax-3_60_mass",
+  "linstax" => "webstax2-linstax/4.0-soak",
+}
+
+if jenkins
+  jobnames.keys.each do |n|
+    v = "COPYARTIFACT_BUILD_NUMBER_" + n.upcase
+    buildno = ENV[v]
+    if buildno
+      topRes.meta["#{n}-url"] = "#{jenkins}job/#{jobnames[n]}/#{buildno}"
+    end
+  end
 end
 
 ARGV.each do |template|

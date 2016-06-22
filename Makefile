@@ -3,7 +3,7 @@
 all: symlinks build
 
 build:
-	perl -I/usr/local/lib/perl5/site_perl/5.8.8 -w ./buildflash.pl --verbose templates/*.txt
+	perl -w ./buildflash.pl --verbose templates/*.txt
 	./mksummary.rb --output status/20-flash_images.json templates/*.txt
 
 symlinks:
