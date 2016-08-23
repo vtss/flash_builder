@@ -1,4 +1,7 @@
 #!/usr/bin/env perl
+
+# Copyright (c) 2016 Microsemi Corporation "Microsemi".
+
 use warnings;
 use strict;
 use Data::Dumper;

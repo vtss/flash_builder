@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# Copyright (c) 2016 Microsemi Corporation "Microsemi".
+
 require 'pp'
 require 'digest'
 require 'optparse' # For command line parsing

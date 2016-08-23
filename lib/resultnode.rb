@@ -1,3 +1,6 @@
+
+# Copyright (c) 2016 Microsemi Corporation "Microsemi".
+
 require 'json'
 require 'erb'
 

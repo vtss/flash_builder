@@ -1,3 +1,5 @@
+# Copyright (c) 2016 Microsemi Corporation "Microsemi".
+
 .PHONY: all symlinks build clean clobber
 
 all: symlinks build

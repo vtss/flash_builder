@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# Copyright (c) 2016 Microsemi Corporation "Microsemi".
+
 package CygCRC;
 
 ###### Start of CRC part
