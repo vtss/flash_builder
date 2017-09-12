@@ -1,0 +1,37 @@
+# Flash template: linux-serval2-8mb-64kb
+# The first section describe the flash geometry: capacity, blocksize
+---
+- capacity: 8M
+  blocksize: 64K
+#
+# Subsequent sections describe individual flash sections:
+#  - name: The FIS name. 1 to 15 characters
+#  - size: Flash section size. Units 'M' or 'K'
+#  - flash: Hex address of section
+#  - entry: Hex address of execution entrypoint (optional)
+#  - memory: Hex address of memory load address (optional)
+#  - datafile: File name to load data from (optional)
+#
+- name: 'RedBoot'
+  size: 256K
+  flash: 0x40000000
+  datafile: artifacts/redboot-jaguar2.img
+- name: 'conf'
+  size: 64K
+  flash: 0x40040000
+- name: 'linux'
+  size: 7680K
+  flash: 0x40050000
+  memory: 0x80100000
+  entry: 0x80100000
+  datafile: artifacts/bringup_serval2.mfi
+- name: 'FIS directory'
+  size: 64K
+  flash: 0x407d0000
+- name: 'RedBoot config'
+  size: 4K
+  flash: 0x407e0000
+  datafile: files/fconfig-linux.bin
+- name: 'Redundant FIS'
+  size: 64K
+  flash: 0x407f0000
