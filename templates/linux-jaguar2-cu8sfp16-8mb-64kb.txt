@@ -1,5 +1,5 @@
 # Flash template: linux-jaguar2-cu8sfp16-8mb-64kb
-# The first section describe the flash geometry: capacity, blocksize
+# The first section describes the flash geometry: capacity, blocksize
 ---
 - capacity: 8M
   blocksize: 64K

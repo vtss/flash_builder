@@ -1,7 +1,7 @@
-# Flash template: linux-servalt-16mb-64kb
+# Flash template: linux-ocelot_8-cu4sfp8-8mb-64kb
 # The first section describes the flash geometry: capacity, blocksize
 ---
-- capacity: 16M
+- capacity: 8M
   blocksize: 64K
 #
 # Subsequent sections describe individual flash sections:
@@ -15,29 +15,23 @@
 - name: 'RedBoot'
   size: 256K
   flash: 0x40000000
-  datafile: artifacts/redboot-servalt.img
+  datafile: artifacts/redboot-ocelot.img
 - name: 'conf'
   size: 64K
   flash: 0x40040000
 - name: 'linux'
-  size: 7936K
+  size: 7680K
   flash: 0x40050000
   memory: 0x80100000
   entry: 0x80100000
-  datafile: artifacts/bringup_serval_t.mfi
-- name: 'linux.bk'
-  size: 7936K
-  flash: 0x40810000
-  memory: 0x80100000
-  entry: 0x80100000
-  datafile: artifacts/bringup_serval_t.mfi
+  datafile: artifacts/bringup_ocelot_8.mfi
 - name: 'FIS directory'
   size: 64K
-  flash: 0x40fd0000
+  flash: 0x407d0000
 - name: 'RedBoot config'
   size: 4K
-  flash: 0x40fe0000
+  flash: 0x407e0000
   datafile: files/fconfig-linux.bin
 - name: 'Redundant FIS'
   size: 64K
-  flash: 0x40ff0000
+  flash: 0x407f0000
